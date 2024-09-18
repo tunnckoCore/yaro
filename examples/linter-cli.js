@@ -1,14 +1,17 @@
 import proc from 'node:process';
 
-import { createCli, isRequiredUtil, yaroCommand } from '../src/index.js';
+// yaro.command is alias of yaroCommand named exported
+// yaro.parser is alias of yaroParser named exported
+// yaro.run is alias of the default exported function run() wihch is just thin wrapper around yaroCreateCli
+// yaro() is also an alias of yaro.run and yaroCreateCli - do not use it to define commands
 
-// or Deno
+import { isRequiredUtil, yaro } from '../src/index.js';
+
+// or Deno;
 // import { yaroCommand } from 'https://esm.sh/yaro@6'
 
-const xaxa = yaroCommand(
-  '[foo] [...files]',
-  'Lint and format files with ESLint --fix and Prettier.',
-)
+const xaxa = yaro
+  .command('[...files]', 'Lint and format files with ESLint --fix and Prettier.')
   .option('--cwd', 'Working directory, defaults to `process.cwd()`.', proc.cwd())
   .option('--log', 'Log per changed file', false)
   .option('-f, --force', 'Force lint, cleaning the cache.', false)
@@ -25,14 +28,15 @@ const xaxa = yaroCommand(
   .option('--verbose', 'Print more verbose output.', false)
   .action(async (flags, ...args) => {
     const files = args[0];
-    console.log('flags/options', flags);
-    console.log('files passed', files);
-    console.log('arguments', args);
+    console.log('hhi from action');
+    // console.log('flags/options', flags);
+    // console.log('files passed', files);
+    // console.log('arguments', args);
 
     // await lint(files, flags);
   });
 
-console.log({ xaxa });
+// console.log(xaxa);
 // => {
 //   xaxa: [AsyncFunction: commandAction] {
 //     isYaroCommand: true,
@@ -51,7 +55,7 @@ console.log({ xaxa });
 //   }
 // }
 
-await createCli({
+await yaro.run({
   commands: { xaxa },
   version: '3.2.1',
   name: 'xaxa-cli',

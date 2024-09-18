@@ -12,6 +12,7 @@
  */
 
 export const yaroParser = parser;
+export const parse = parser;
 export { parser };
 
 export default function parser(argv, config) {

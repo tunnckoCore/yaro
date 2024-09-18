@@ -214,7 +214,7 @@ export default (yaroPlugins) => {
     return res;
   }
 
-  function createActionMethod(cli) {
+  function createActionMethod(cli, _cfg) {
     return (handler) => {
       if (!cli.fn && typeof handler !== 'function') {
         throw new TypeError('cli do not have action handler function');

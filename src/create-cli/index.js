@@ -39,14 +39,19 @@ async function yaroCreateCli(argv, config) {
 
   cfg.exit = cfg.exit ?? (() => {});
   cfg.buildOutput = cfg.buildOutput ?? buildOutput;
+  cfg.yaroParser =
+    cfg.yaroParse ||
+    cfg.yaroParser ||
+    (cfg.yaro && cfg.yaro.parse) ||
+    (cfg.yaro && cfg.yaro.parser);
 
-  const parse = cfg.yaroParse || (cfg.yaro && cfg.yaro.parse) || cfg.yaro;
+  cfg.yaroCommand = cfg.yaroCommand || (cfg.yaro && cfg.yaro.command);
 
-  if (typeof parse !== 'function') {
-    throw new TypeError('requires parser: `cfg.yaroParse` or `cfg.yaro`');
+  if (typeof cfg.yaroParser !== 'function') {
+    throw new TypeError('requires parser: `cfg.yaroParser` or `cfg.yaro.parser`');
   }
 
-  const parsedInfo = parse(cfg.argv);
+  const parsedInfo = cfg.yaroParser(cfg.argv);
   const { rootCommand, entries } = getCommands(cfg);
   const cliInfo = getCliInfo(rootCommand, entries, cfg);
 
@@ -77,7 +82,7 @@ async function yaroCreateCli(argv, config) {
     return;
   }
 
-  const matchedCommand = findMatchCommand(meta.entries, meta);
+  const matchedCommand = await findMatchCommand(meta.entries, meta);
   if (!matchedCommand) {
     const noCommandSpecified = meta.argv._.length === 0;
     const commandNotFound = noCommandSpecified === false;
@@ -148,9 +153,15 @@ function getCommands(cfg) {
         }
       }
 
-      if (!cmd.isYaroCommand && typeof cmd === 'function' && cfg.yaroCommand) {
+      if (
+        !cmd.isYaroCommand &&
+        typeof cmd === 'function' &&
+        typeof cfg.yaroCommand === 'function'
+      ) {
         // in case we get just a bare function, treat it like command
-        return [kk, cfg.yaroCommand(cmd)];
+        const yaroAction = cfg.yaroCommand(cmd);
+
+        return [kk, yaroAction];
       }
 
       return [kk, cmd];
@@ -184,10 +195,10 @@ function getCliInfo(rootCommand, commands, cfg) {
   };
 }
 
-async function tryCatch(code, meta, function_) {
+async function tryCatch(code, meta, func) {
   let result = null;
   try {
-    result = await function_(meta.argv);
+    result = await func(meta.argv);
   } catch (err) {
     const exitCode = err.code && typeof err.code === 'number' ? err.code : 1;
     err.code = code;
@@ -198,9 +209,9 @@ async function tryCatch(code, meta, function_) {
       meta.config.buildOutput(meta.argv, meta, { error: err, exitCode, code });
       return null;
     }
-    if (function_.isYaroCommand) {
-      const nnn = function_.cli.name;
-      const uuu = function_.cli.usage;
+    if (func.isYaroCommand) {
+      const nnn = func.cli.name;
+      const uuu = func.cli.usage;
       meta.cliInfo.name = nnn;
       meta.cliInfo.usage = uuu;
 
