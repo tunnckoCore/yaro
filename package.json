@@ -1,6 +1,6 @@
 {
   "name": "yaro",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "licenseStart": 2020,
   "license": "MPL-2.0",
   "description": "Fast, minimalist, pluggable and functional command line parsing. Create CLIs easily. A wrapper package exporting everything from several Yaro packages.",
@@ -13,7 +13,8 @@
   "type": "module",
   "main": "src/index.js",
   "files": [
-    "src"
+    "src",
+    "!*.test.*"
   ],
   "engines": {
     "node": ">=20"
@@ -28,7 +29,6 @@
     "check": "bun run format && bun run lint",
     "format": "bunx prettier '**/*.{md,mdx,astro,sol,json}' --write",
     "lint": "bunx eslint '**/*.{js,jsx,ts,tsx,mjs,cjs}' --fix --cache --report-unused-disable-directives --format codeframe --quiet",
-    "prepublishOnly": "bun run build",
     "test": "bun test"
   },
   "devDependencies": {
