@@ -1,0 +1,1 @@
+{"fnString":"async () => {\n  assert.equal(typeof yaroCommand, 'function');\n}","title":"initial tests for yaro-command package"}
