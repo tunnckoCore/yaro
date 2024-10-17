@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MPL-2.0
 
-/* eslint-disable no-param-reassign */
-
 import { buildOutput } from './utils.js';
 
 const UNNAMED_COMMAND_PREFIX = '___UNNAMED_COMMAND-';
@@ -27,6 +25,7 @@ export function rootWithMultipleCommands(globalOptions) {
 export { yaroCreateCli, UNNAMED_COMMAND_PREFIX };
 export default yaroCreateCli;
 
+// eslint-disable-next-line max-statements
 async function yaroCreateCli(argv, config) {
   const cfg = Array.isArray(argv) ? { argv, ...config } : { argv: [], ...argv };
 
@@ -195,10 +194,10 @@ function getCliInfo(rootCommand, commands, cfg) {
   };
 }
 
-async function tryCatch(code, meta, func) {
+async function tryCatch(code, meta, function_) {
   let result = null;
   try {
-    result = await func(meta.argv);
+    result = await function_(meta.argv);
   } catch (err) {
     const exitCode = err.code && typeof err.code === 'number' ? err.code : 1;
     err.code = code;
@@ -209,9 +208,9 @@ async function tryCatch(code, meta, func) {
       meta.config.buildOutput(meta.argv, meta, { error: err, exitCode, code });
       return null;
     }
-    if (func.isYaroCommand) {
-      const nnn = func.cli.name;
-      const uuu = func.cli.usage;
+    if (function_.isYaroCommand) {
+      const nnn = function_.cli.name;
+      const uuu = function_.cli.usage;
       meta.cliInfo.name = nnn;
       meta.cliInfo.usage = uuu;
 

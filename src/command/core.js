@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MPL-2.0
 
 /* eslint-disable unicorn/consistent-function-scoping */
-/* eslint-disable no-param-reassign */
 
 let unnamedCommandsCount = 0;
 

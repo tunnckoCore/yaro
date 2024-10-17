@@ -1,3 +1,5 @@
-const config = require('eslint-config-tunnckocore');
+'use strict';
 
-module.exports = { ...config.prettierConfig };
+const { prettierConfig } = require('eslint-config-tunnckocore');
+
+module.exports = prettierConfig;

@@ -5,6 +5,8 @@ fixtures
 *.tsbuildinfo
 *.*cache
 
+*lock*
+
 # Build environment
 dist
 .cache
@@ -73,3 +75,6 @@ typings/
 
 # next.js build output
 .next
+
+.astro
+.netlify

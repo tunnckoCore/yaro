@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MPL-2.0
 
-/* eslint-disable no-param-reassign */
-
+// eslint-disable-next-line max-statements
 export function buildOutput(_flags, meta, info) {
   if ((info.noCommandSpecified && meta.config.showHelpOnEmpty) || info.isHelp) {
     if (info.isHelp) {

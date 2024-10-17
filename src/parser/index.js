@@ -15,7 +15,7 @@ export const yaroParser = parser;
 export const parse = parser;
 export { parser };
 
-export default function parser(argv, config) {
+export default function parser(argv, config = {}) {
   const res = { _: [] };
   if (!argv) {
     return res;
@@ -23,13 +23,13 @@ export default function parser(argv, config) {
   if (!Array.isArray(argv)) {
     throw new TypeError('expects `argv` to be an array');
   }
-  const options = {
-    array: {},
-    autoCount: true,
-    camelCase: false,
-    ...config,
-  };
-  const camelcase = options.camelCase ?? options.camelcase;
+
+  const options = { array: {}, ...config };
+  options.autoCount = config.autoCount ?? config.autocount ?? true;
+  delete options.autocount;
+
+  options.camelCase = config.camelCase ?? config.camelcase ?? false;
+  delete options.camelcase;
 
   let argument;
   let previous = {};
@@ -110,7 +110,7 @@ export default function parser(argv, config) {
       key = key === null && isValue && previous.isFlag === true ? previous.key : key;
     }
 
-    if (key && !isValue && camelcase && isLong && key.indexOf('-') > 0) {
+    if (key && !isValue && options.camelCase && isLong && key.indexOf('-') > 0) {
       key = key.replaceAll(/([a-z])-([a-z])/g, (_, p1, p2) => p1 + p2.toUpperCase());
     }
 
