@@ -100,7 +100,7 @@ You can try this example with `node examples/linter-cli.js foo bar qux`
 ```js
 import proc from 'node:process';
 
-import { createCli, isRequiredUtil, yaroCommand } from 'yaro';
+import { run, isRequiredUtil, yaroCommand } from 'yaro';
 
 // or Deno
 // import { yaroCommand } from 'https://esm.sh/yaro@6'
@@ -150,7 +150,7 @@ console.log({ xaxa });
 //   }
 // }
 
-await createCli({
+await run({
   commands: { xaxa },
   version: '3.2.1',
   name: 'xaxa-cli',
