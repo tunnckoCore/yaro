@@ -1,6 +1,6 @@
 {
   "name": "yaro",
-  "version": "6.3.3",
+  "version": "6.4.0",
   "licenseStart": 2020,
   "license": "MPL-2.0",
   "description": "Fast, minimalist, pluggable and functional command line parsing. Create CLIs easily. A wrapper package exporting everything from several Yaro packages.",
