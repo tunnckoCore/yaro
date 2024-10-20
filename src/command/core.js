@@ -38,6 +38,7 @@ export default (yaroPlugins) => {
       settings = { desc: settings };
     }
 
+    // validate args (required cannot have default values; optional ones can)
     findAllBrackets(usage);
 
     const cfg = { ...settings };
@@ -203,7 +204,14 @@ export default (yaroPlugins) => {
         throw error;
       }
 
-      const defValue = hasDefault ? value.split('=')[1] : null;
+      let defValue = null;
+      if (hasDefault) {
+        let val = value.split('=')[1];
+        // eslint-disable-next-line prefer-template
+        val = val.startsWith('[') ? val + ']' : val;
+        val = val.startsWith('[') || val.startsWith('{') ? val : `"${val}"`;
+        defValue = JSON.parse(val);
+      }
 
       return {
         optional: !isRequired,
@@ -291,8 +299,11 @@ export default (yaroPlugins) => {
         const hasManualInput = manualCallArgs.length > 0;
 
         for (const arg of cmdArgs) {
+          const isArr = Array.isArray(arg.value) && arg.value.length === 0;
+          const isObj = typeof arg.value === 'object' && Object.keys(arg.value || {}).length === 0;
+
           const val =
-            'default' in arg && !arg.value
+            'default' in arg && (!arg.value || isArr || isObj)
               ? arg.default
               : hasManualInput
                 ? args[arg.name]
