@@ -27,29 +27,30 @@ const hela = yaro
 //   });
 
 // foo({}, { patterns: 'bar' });
+async function loadConfig() {
+  const cfg = await import('../hela-demo.config.mjs');
+  const cmds =
+    (typeof cfg.default === 'function' ? await cfg.default() : (cfg?.default ?? cfg)) || {};
 
-const cfg = await import('../hela-demo.config.mjs');
-const cmds =
-  (typeof cfg.default === 'function' ? await cfg.default() : (cfg?.default ?? cfg)) || {};
+  return Object.fromEntries(
+    Object.entries(cmds).map(([key, valueCmdFn]) => {
+      const isUnnamed = valueCmdFn.cli?.name?.includes('UNNAMED');
+      valueCmdFn.key = isUnnamed ? key : valueCmdFn.cli?.name || key;
 
-const commands = Object.fromEntries(
-  Object.entries(cmds).map(([key, valueCmdFn]) => {
-    const isUnnamed = valueCmdFn.cli?.name?.includes('UNNAMED');
-    valueCmdFn.key = isUnnamed ? key : valueCmdFn.cli?.name || key;
+      if (isUnnamed) {
+        valueCmdFn.cli.name = valueCmdFn.key;
+        valueCmdFn.cmd.name = valueCmdFn.key;
+      }
 
-    if (isUnnamed) {
-      valueCmdFn.cli.name = valueCmdFn.key;
-      valueCmdFn.cmd.name = valueCmdFn.key;
-    }
-
-    return [key, valueCmdFn];
-  }),
-);
+      return [key, valueCmdFn];
+    }),
+  );
+}
 
 // console.log('commandscommandscommands', commands);
 
 await yaro.run({
-  commands,
+  commands: await loadConfig(),
   // commands: { ...exampleCommands, one, foo },
   rootCommand: hela,
   name: 'hela',
