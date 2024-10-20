@@ -42,6 +42,8 @@ import { yaro, yaroCommand } from 'yaro';
 
 // node ./examples/git-like.js --help
 
+// node ./examples/git-like.js --help
+
 // `commit` is just an async function
 // NOTE: arguments are passed as second param to the handler, as named params
 const commit = yaroCommand('commit [...msg]', async (_options, { msg }) => {
@@ -60,8 +62,8 @@ const add = yaroCommand('add [...files]', 'git add files')
 const remoteAdd = yaroCommand('remote add [foo] [bar=qux]')
   .option('-f, --force', 'some option here')
   .option('--dry-run', 'Call without running', false)
-  .action(async (_options, { foo, bar }) => {
-    console.log('adding remote %s -> %s', foo, bar);
+  .action(async (_options, { foo, bar }, commandMeta) => {
+    console.log('adding remote %s -> %s', foo, bar, { commandMeta });
   });
 
 // git remote rm foo
@@ -77,12 +79,14 @@ const remoteDelete = yaroCommand('remote rm <name>')
     if (!options.foo) {
       throw new Error('some fake random error, try passing --foo');
     }
+
     console.log('okkkk! foo is passed');
   });
 
 await yaro.run({
   name: 'git-cli',
   version: '3.1.1',
+  showHelpOnEmpty: true,
   commands: {
     add,
     remoteAdd,
