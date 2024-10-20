@@ -1,6 +1,6 @@
 // import ipFilter from 'ip-filter';
 
-import { run, yaroCommand } from '../src/index.js';
+import { yaro, yaroCommand } from '../src/index.js';
 
 // node ./examples/linter-cli.js --help
 
@@ -11,7 +11,7 @@ const lint = yaroCommand('[...files]', async (options, { files }) => {
   // ipFilter('sasasasa');
 });
 
-await run({
+await yaro.run({
   name: 'foo-bar-cli',
   version: '2.1.6',
   commands: { lint },

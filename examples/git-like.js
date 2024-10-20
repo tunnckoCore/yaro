@@ -1,4 +1,4 @@
-import { run, yaroCommand } from '../src/index.js';
+import { yaro, yaroCommand } from '../src/index.js';
 
 // node ./examples/git-like.js --help
 
@@ -35,7 +35,7 @@ const remoteDelete = yaroCommand('remote rm <name>')
     console.log('okkkk! foo is passed');
   });
 
-await run({
+await yaro.run({
   name: 'git-cli',
   version: '3.1.1',
   showHelpOnEmpty: true,

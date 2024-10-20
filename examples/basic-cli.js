@@ -1,10 +1,10 @@
 import ipFilter from 'ip-filter';
 
-import { createCli } from '../src/index.js';
+import { yaro } from '../src/index.js';
 
 // node ./examples/basic-cli.js --help
 
-await createCli({
+await yaro.run({
   name: 'foo-bar-cli',
   version: '0.1.0',
   commands: {

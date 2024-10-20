@@ -38,7 +38,7 @@ But it's pretty straightforward:
 Making a git-like cli:
 
 ```js
-import { createCli, yaroCommand } from 'yaro';
+import { yaro, yaroCommand } from 'yaro';
 
 // node ./examples/git-like.js --help
 
@@ -78,7 +78,7 @@ const remoteDelete = yaroCommand('remote rm <name>')
     console.log('okkkk! foo is passed');
   });
 
-await createCli({
+await yaro.run({
   name: 'git-cli',
   version: '3.1.1',
   commands: {
@@ -150,6 +150,7 @@ console.log({ xaxa });
 //   }
 // }
 
+// or import yaro, and call `yaro.run`
 await run({
   commands: { xaxa },
   version: '3.2.1',
