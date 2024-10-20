@@ -26,8 +26,7 @@ const xaxa = yaro
     // normalize: true,
   })
   .option('--verbose', 'Print more verbose output.', false)
-  .action(async (flags, ...arguments_) => {
-    const files = arguments_[0];
+  .action(async (flags, { files }) => {
     console.log('hhi from action');
     console.log('flags/options', flags);
     console.log('files passed', files);

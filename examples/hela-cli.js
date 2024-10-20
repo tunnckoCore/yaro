@@ -9,8 +9,8 @@ const hela = yaro
   .option('--bar', 'Some random flag here', true)
   .action(rootWithMultipleCommands);
 
-const one = yaro.command('one <a> [b]', 'Some command here').action((options) => {
-  console.log('command: one!!', options);
+const one = yaro.command('one <a> [b]', 'Some command here').action((options, { a, b }) => {
+  console.log('command: one!!', options, { a, b });
 });
 
 const foo = yaro
@@ -18,8 +18,8 @@ const foo = yaro
   .command('foo <...patterns>')
   .option('-q, --qux', 'Some quxie here')
   // flags includes global ones too and their defaults
-  .action((flags, { patterns, outdir }, commandMeta) => {
-    console.log('foo with patterns', { flags, patterns, outdir, commandMeta });
+  .action((flags, { patterns }, commandMeta) => {
+    console.log('foo with patterns', { flags, patterns, commandMeta });
   });
 
 // foo({}, { patterns: 'bar' });

@@ -22,7 +22,7 @@ export const affected = yaroCommand(
     required: isRequired,
     // normalize: true,
   })
-  .action(async (options, names) => {
+  .action(async (options, { names }) => {
     console.log('affected command', { options, names });
   });
 
@@ -36,21 +36,21 @@ export const ensCreate = yaroCommand(
     type: Boolean,
     default: false,
   })
-  .action(async (options, _foo, names) => {
+  .action(async (options, { foo, names }) => {
     console.log('run affected command from init command');
-    await affected(options, names);
+    await affected(options, { foo, names });
   });
 
 // export const ens = command('ens <command>', async (options, cmd, ...args) => {
 //   await ensCreate(options, ...args);
 // });
 
-export const lint = yaroCommand('gaga [...files]', async (options, files) => {
+export const lint = yaroCommand('gaga [...files]', async (options, { files }) => {
   console.log('gaga: formatting and linting files', { options, files });
 });
 
 export const xaxa = yaroCommand((options) => {
-  console.log('xaxa lint cmd!', { options });
+  console.log('lint command without usage definition', { options });
 });
 
 export const fmt = async (options) => {

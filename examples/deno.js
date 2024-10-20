@@ -4,7 +4,7 @@ import { run, yaroCommand } from '../src/index.js';
 
 // node ./examples/linter-cli.js --help
 
-const lint = yaroCommand('[...files]', async (options, files) => {
+const lint = yaroCommand('[...files]', async (options, { files }) => {
   console.log('Linting files:', files);
   console.log('Options:', options);
   // testing with external error
