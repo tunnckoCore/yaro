@@ -100,7 +100,6 @@ async function yaroCreateCli(argv, config) {
     const rootReturn = await tryCatch('ERR_ROOT_FAILURE', meta, rootCommand);
     if (typeof rootReturn === 'function') {
       if (meta.argv.help) {
-        console.log('command specific --help output', matchedCommand);
         await cfg.buildOutput(meta.argv, meta, { isHelp: true, matchedCommand });
         return;
       }
@@ -272,7 +271,7 @@ function findMatchCommand(entries, meta) {
   if (match && match[1]) {
     const handler = match[1];
 
-    handler.key = handler.key || match[0];
+    handler.key = handler.key || handler.cli?.name || match[0];
     handler.cli.name = handler.key;
     handler.cmd.name = handler.key;
 

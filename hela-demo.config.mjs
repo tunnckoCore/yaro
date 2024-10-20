@@ -48,8 +48,8 @@ export const ensCreate = yaroCommand(
 //   await ensCreate(options, ...args);
 // });
 
-export const lint = yaroCommand('gaga [...files]', async (options, { files }) => {
-  console.log('gaga: formatting and linting files', { options, files });
+export const lint = yaroCommand('gaga [...files]', async (options, { files }, cmdMeta) => {
+  console.log('gaga: formatting and linting files', { options, files, env: cmdMeta.env });
 });
 
 export const xaxa = yaroCommand((options) => {

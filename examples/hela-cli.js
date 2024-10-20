@@ -10,7 +10,7 @@ const hela = yaro
   .command('', 'Software development and management.')
   .option('--cwd', 'Current working directory', proc.cwd())
   .option('-c, --config', 'Path to config file', 'hela.config.js')
-  .option('--bar', 'Some random flag here', true)
+  .option('--populate-env', 'Populate env from process.env', true)
   .action(rootWithMultipleCommands);
 
 // const one = yaro.command('one <a> [b]', 'Some command here').action((options, { a, b }) => {

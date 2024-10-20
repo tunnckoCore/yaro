@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
+import proc from 'node:process';
+
 /* eslint-disable unicorn/consistent-function-scoping */
 
 let unnamedCommandsCount = 0;
@@ -321,6 +323,8 @@ export default (yaroPlugins) => {
 
           args[arg.name] = val;
         }
+
+        cmd.env = cmd.argv.populateEnv ? { ...proc.env } : {};
 
         return commandHandler.call(null, flags, args, cmd);
       }
