@@ -39,6 +39,7 @@ export const ensCreate = yaroCommand(
     default: false,
   })
   .action(async (options, { foo, bar, names }) => {
+    // throw new Error('fake err');
     console.log('run affected command from init command', { foo, bar, names });
     await affected(options, { foo, bar, names });
   });
@@ -61,7 +62,8 @@ export const fmt = async (options) => {
   await xaxa(options);
 };
 
-export const foobie = async (options) => {
+export const foobie = async (_options) => {
   console.log('foobie command calls `fmt` (bare function) command');
-  await fmt(options);
+
+  throw new Error('fake err');
 };

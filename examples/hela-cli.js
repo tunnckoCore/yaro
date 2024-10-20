@@ -34,16 +34,19 @@ const cmds =
 
 const commands = Object.fromEntries(
   Object.entries(cmds).map(([key, valueCmdFn]) => {
-    if (valueCmdFn.cli && valueCmdFn.cli.name.includes('UNNAMED')) {
-      valueCmdFn.cli.name = key;
-    }
-    if (valueCmdFn.cmd && valueCmdFn.cmd.name.includes('UNNAMED')) {
-      valueCmdFn.cmd.name = key;
+    const isUnnamed = valueCmdFn.cli?.name?.includes('UNNAMED');
+    valueCmdFn.key = isUnnamed ? key : valueCmdFn.cli?.name || key;
+
+    if (isUnnamed) {
+      valueCmdFn.cli.name = valueCmdFn.key;
+      valueCmdFn.cmd.name = valueCmdFn.key;
     }
 
     return [key, valueCmdFn];
   }),
 );
+
+// console.log('commandscommandscommands', commands);
 
 await yaro.run({
   commands,

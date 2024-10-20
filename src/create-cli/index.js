@@ -71,11 +71,6 @@ async function yaroCreateCli(argv, config) {
     entries,
   };
 
-  if (parsedInfo.help) {
-    await cfg.buildOutput(meta.argv, meta, { isHelp: true });
-    return;
-  }
-
   if (rootCommand && meta.entries.length === 0) {
     meta.matchedCommand = rootCommand;
     meta.singleMode = true;
@@ -85,6 +80,11 @@ async function yaroCreateCli(argv, config) {
 
   const matchedCommand = await findMatchCommand(meta.entries, meta);
   if (!matchedCommand) {
+    if (meta.argv.help) {
+      await cfg.buildOutput(meta.argv, meta, { isHelp: true });
+      return;
+    }
+
     const noCommandSpecified = meta.argv._.length === 0;
     const commandNotFound = noCommandSpecified === false;
 
@@ -99,6 +99,12 @@ async function yaroCreateCli(argv, config) {
   if (rootCommand) {
     const rootReturn = await tryCatch('ERR_ROOT_FAILURE', meta, rootCommand);
     if (typeof rootReturn === 'function') {
+      if (meta.argv.help) {
+        console.log('command specific --help output', matchedCommand);
+        await cfg.buildOutput(meta.argv, meta, { isHelp: true, matchedCommand });
+        return;
+      }
+
       const handler = () => rootReturn({ ...meta, matchedCommand });
       meta.matchedCommand = matchedCommand;
       await tryCatch('ERR_MATCHED_COMMAND_FAILURE', meta, handler);
@@ -211,7 +217,7 @@ async function tryCatch(code, meta, handler) {
       return null;
     }
     if (handler.isYaroCommand) {
-      const nnn = handler.cli.name;
+      const nnn = handler.key || handler.cli.name;
       const uuu = handler.cli.usage;
       meta.cliInfo.name = nnn;
       meta.cliInfo.usage = uuu;
@@ -234,14 +240,14 @@ function findMatchCommand(entries, meta) {
     if (cmd.isYaroCommand) {
       let matched = false;
 
-      for (const [index, argument] of meta.argv._.entries()) {
-        if (cmd.cli.aliases.includes(argument)) {
-          matched = argument;
+      for (const [index, arg] of meta.argv._.entries()) {
+        if (cmd.cli.aliases.includes(arg)) {
+          matched = arg;
           break;
         }
 
-        const temporary = meta.argv._.slice(0, index + 1).join(' ');
-        matched = cmd.cli.aliases.find((x) => x === temporary) || '';
+        const temp = meta.argv._.slice(0, index + 1).join(' ');
+        matched = cmd.cli.aliases.find((x) => x === temp) || '';
         if (matched) {
           break;
         }
@@ -263,5 +269,15 @@ function findMatchCommand(entries, meta) {
     return false;
   });
 
-  return match && match[1];
+  if (match && match[1]) {
+    const handler = match[1];
+
+    handler.key = handler.key || match[0];
+    handler.cli.name = handler.key;
+    handler.cmd.name = handler.key;
+
+    return handler;
+  }
+
+  return null;
 }

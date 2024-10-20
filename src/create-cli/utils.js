@@ -3,19 +3,34 @@
 // eslint-disable-next-line max-statements
 export function buildOutput(_flags, meta, info) {
   if ((info.noCommandSpecified && meta.config.showHelpOnEmpty) || info.isHelp) {
-    if (info.isHelp) {
+    if (!info.matchedCommand && info.isHelp) {
       udpateHelpLine(meta);
       console.log('\n$ %s [options]\n', meta.cliInfo.helpLine);
+      showAvailableCommands(meta, console.log);
+    } else if (info.isHelp) {
+      console.log(
+        '\n$ %s\n',
+        `${meta.config.name} ${info.matchedCommand.key} ${info.matchedCommand.cli.usage}`,
+      );
+
+      console.log('Aliases:', info.matchedCommand.cli.aliases.join(', ').trim());
+
+      console.log('Options:');
+      for (const flag of Object.values(info.matchedCommand.cli.meta.flags)) {
+        const def =
+          'default' in flag && flag.default !== undefined ? `(default: ${flag.default})` : '';
+        console.log('  %s   %s %s', flag.rawName, flag.desc, def);
+      }
+      console.log('');
     }
 
-    showAvailableCommands(meta, console.log);
     meta.config.exit(info.exitCode ?? 0);
     return;
   }
 
   if (info.commandNotFound) {
-    const arguments_ = meta.argv._.join(' ');
-    console.error('ERR_COMMAND_NOT_FOUND: command "%s" not found', arguments_);
+    const args = meta.argv._.join(' ');
+    console.error('ERR_COMMAND_NOT_FOUND: command "%s" not found', args);
     udpateHelpLine(meta);
     console.error('\n$ %s [options]\n', meta.cliInfo.helpLine);
 
@@ -29,7 +44,7 @@ export function buildOutput(_flags, meta, info) {
 
   if (error && has && !error.cmdUsage) {
     const isRootFailed = /ROOT_COMMAND_FAILED/.test(error.code);
-    const cmdError = error.meta.matchedCommand?.cli || meta.cliInfo;
+    const cmdError = error.meta.matchedCommand?.cmd || meta.cliInfo;
 
     cmdError.usage = cmdError.usage.trim();
     cmdError.name = cmdError.name === '_' ? '' : cmdError.name;
@@ -48,6 +63,7 @@ export function buildOutput(_flags, meta, info) {
     }
 
     console.error('\n$ %s --verbose', fLine.trim());
+    console.error('\n$ %s --help', fLine.trim());
     console.error('');
 
     meta.config.exit(1);
@@ -57,7 +73,7 @@ export function buildOutput(_flags, meta, info) {
   if (error) {
     const helpLine =
       meta.cliInfo.helpLine === meta.cliInfo.name
-        ? `${meta.cliInfo.name} ${meta.matchedCommand?.cli?.name || ''}`
+        ? `${meta.cliInfo.name} ${meta.matchedCommand.key || meta.matchedCommand?.cmd?.name || ''}`
         : meta.cliInfo.helpLine.replace(meta.cliInfo.usage, '');
 
     // console.log('meta.cliInfo', meta.cliInfo, failed ? 'sasa' : 12);
@@ -76,7 +92,8 @@ export function buildOutput(_flags, meta, info) {
       );
     }
     udpateHelpLine(meta, error);
-    console.error('\n$ %s --verbose\n', helpLine.trim());
+    console.error('\n$ %s --verbose', helpLine.trim());
+    console.error('$ %s --help\n', helpLine.trim());
     meta.config.exit(info.exitCode);
     return;
   }
