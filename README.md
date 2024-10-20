@@ -43,14 +43,15 @@ import { yaro, yaroCommand } from 'yaro';
 // node ./examples/git-like.js --help
 
 // `commit` is just an async function
-const commit = yaroCommand('commit [...msg]', async (_options, message) => {
-  console.log('git commit -sS', JSON.stringify(message.flat().join(' ')));
+// arguments are passed as second param to the handler, as named params
+const commit = yaroCommand('commit [...msg]', async (_options, { msg }) => {
+  console.log('git commit -sS', JSON.stringify(msg.flat().join(' ')));
 });
 
 // `add` is just an async function
 const add = yaroCommand('add [...files]', 'git add files')
   .option('-A, --all', 'add all files', true)
-  .action(async (_options, files) => {
+  .action(async (_options, { files }) => {
     console.log('git add files:', files);
   });
 
@@ -58,7 +59,7 @@ const add = yaroCommand('add [...files]', 'git add files')
 const remoteAdd = yaroCommand('remote add [foo] [bar]')
   .option('-f, --force', 'some option here')
   .option('--dry-run', 'Call without running', false)
-  .action(async (_options, foo, bar) => {
+  .action(async (_options, { foo, bar }) => {
     console.log('adding remote %s -> %s', foo, bar);
   });
 
@@ -69,7 +70,7 @@ const remoteAdd = yaroCommand('remote add [foo] [bar]')
 const remoteDelete = yaroCommand('remote rm <name>')
   .alias('remote del', 'remote remove', 'rerm')
   .option('--dry-run', 'Call without running', false)
-  .action(async (options, name) => {
+  .action(async (options, { name }) => {
     console.log('git remote rm', name);
 
     if (!options.foo) {
@@ -93,7 +94,7 @@ await yaro.run({
 ### Single Command Mode
 
 We are detecting by default if you pass just one `yaroCommand` to the `commands` object of
-`createCli`.
+`yaro.run`.
 
 You can try this example with `node examples/linter-cli.js foo bar qux`
 
@@ -122,8 +123,7 @@ const xaxa = yaroCommand(
     // normalize: true,
   })
   .option('--verbose', 'Print more verbose output.', false)
-  .action(async (flags, ...args) => {
-    const files = args[0];
+  .action(async (flags, { files }) => {
     console.log('flags/options', flags);
     console.log('files passed', files);
     console.log('arguments', args);
