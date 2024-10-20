@@ -25,11 +25,11 @@
     "tag": "latest"
   },
   "scripts": {
-    "xbuild": "bun build src/index.js --outdir dist --target=node --format=esm && cp package.json dist && cp README.md dist",
     "check": "bun run format && bun run lint",
     "format": "bunx prettier '**/*.{md,mdx,astro,sol,json}' --write",
     "lint": "bunx eslint '**/*.{js,jsx,ts,tsx,mjs,cjs}' --fix --cache --report-unused-disable-directives --format codeframe --quiet",
-    "test": "bun test"
+    "test": "bun test",
+    "xbuild": "bun build src/index.js --outdir dist --target=node --format=esm && cp package.json dist && cp README.md dist"
   },
   "devDependencies": {
     "eslint-config-tunnckocore": "^8.2.2",

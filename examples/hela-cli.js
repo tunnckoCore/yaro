@@ -1,4 +1,5 @@
 import proc from 'node:process';
+
 import { rootWithMultipleCommands, yaro } from '../src/index.js';
 import * as exampleCommands from './some-commands.js';
 
