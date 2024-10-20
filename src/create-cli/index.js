@@ -19,7 +19,9 @@ export function rootWithMultipleCommands(globalOptions) {
   // the reason we should do this, in case we have both `rootCommand` and `commands` defined,
   // is because we do not have access to the correct parsed `argv`, it's not full,
   // and we cannot do it internally either.
-  return async ({ argv, matchedCommand }) => matchedCommand({ ...globalOptions, ...argv });
+  return async ({ argv, matchedCommand }) =>
+    // console.log({ argv, rest });
+    matchedCommand({ ...globalOptions, ...argv });
 }
 
 export { yaroCreateCli, UNNAMED_COMMAND_PREFIX };
@@ -194,10 +196,10 @@ function getCliInfo(rootCommand, commands, cfg) {
   };
 }
 
-async function tryCatch(code, meta, function_) {
+async function tryCatch(code, meta, handler) {
   let result = null;
   try {
-    result = await function_(meta.argv);
+    result = await handler(meta.argv);
   } catch (err) {
     const exitCode = err.code && typeof err.code === 'number' ? err.code : 1;
     err.code = code;
@@ -208,9 +210,9 @@ async function tryCatch(code, meta, function_) {
       meta.config.buildOutput(meta.argv, meta, { error: err, exitCode, code });
       return null;
     }
-    if (function_.isYaroCommand) {
-      const nnn = function_.cli.name;
-      const uuu = function_.cli.usage;
+    if (handler.isYaroCommand) {
+      const nnn = handler.cli.name;
+      const uuu = handler.cli.usage;
       meta.cliInfo.name = nnn;
       meta.cliInfo.usage = uuu;
 
