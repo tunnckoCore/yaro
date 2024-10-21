@@ -259,10 +259,8 @@ export default (yaroPlugins) => {
 
       commandAction.isYaroCommand = true;
       commandAction.cli = cmd;
-      commandAction.cmd = cmd;
       commandHandler.isYaroCommand = true;
       commandHandler.cli = cmd;
-      commandHandler.cmd = cmd;
 
       return commandAction;
 
@@ -277,8 +275,12 @@ export default (yaroPlugins) => {
           required(cmd.meta.required, cmd.meta.aliases),
         )(parsedFlags);
 
-        const { _: positionals, ...flags } = argv;
-        cmd.argv = argv;
+        const { _: positionals, __GLOBAL_OPTIONS__, ...flags } = argv;
+        cmd.argv = { ...flags, _: positionals };
+
+        // !NOTE: if global options is defined, then the current cmd is used as subcommand to a rootCommand
+        cmd.globalOptions = __GLOBAL_OPTIONS__;
+        cmd.usedAsSubcommand = Boolean(cmd.globalOptions);
 
         const cmdUsage = `${cmd.name === '_' ? '' : cmd.name} ${cmd.usage}`.trim();
 

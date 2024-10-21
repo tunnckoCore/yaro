@@ -1,4 +1,4 @@
-import proc from 'node:process';
+// import proc from 'node:process';
 
 // yaro.command is alias of yaroCommand named exported
 // yaro.parser is alias of yaroParser named exported
@@ -10,26 +10,27 @@ import { isRequiredUtil, yaro } from '../src/index.js';
 // or Deno;
 // import { yaroCommand } from 'https://esm.sh/yaro@6'
 
-const xaxa = yaro
+export const xaxa = yaro
   .command('[...files]', 'Lint and format files with ESLint --fix and Prettier.')
-  .option('--cwd', 'Working directory, defaults to `process.cwd()`.', proc.cwd())
+  // .option('--cwd', 'Working directory, defaults to `process.cwd()`.', proc.cwd())
   .option('--log', 'Log per changed file', false)
   .option('-f, --force', 'Force lint, cleaning the cache.', false)
-  .option('-c, --config', 'Path to config file.', {
+  .option('-c, --config', 'Path to xaxa config file.', {
     default: 'xaxa.config.js',
     required: isRequiredUtil,
   })
-  .option('--workspace-file', 'File path to write workspaces metadata.', {
-    default: 'hela-workspace.json',
-    required: isRequiredUtil,
-    // type: 'string',
-    // normalize: true,
-  })
-  .option('--verbose', 'Print more verbose output.', false)
-  .action(async (flags, { files }) => {
+  // .option('--workspace-file', 'File path to write workspaces metadata.', {
+  //   default: 'hela-workspace.json',
+  //   required: isRequiredUtil,
+  //   // type: 'string',
+  //   // normalize: true,
+  // })
+  // .option('--verbose', 'Print more verbose output.', false)
+  .action(async (flags, { files }, { globalOptions }) => {
     console.log('hhi from action');
     console.log('flags/options', flags);
     console.log('files passed', files);
+    console.log('root command options', { ...globalOptions });
     // console.log('arguments', args);
 
     // await lint(files, flags);

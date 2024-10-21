@@ -19,9 +19,9 @@ export function rootWithMultipleCommands(globalOptions) {
   // the reason we should do this, in case we have both `rootCommand` and `commands` defined,
   // is because we do not have access to the correct parsed `argv`, it's not full,
   // and we cannot do it internally either.
-  return async ({ argv, matchedCommand }) =>
+  return async ({ matchedCommand, argv }) =>
     // console.log({ argv, rest });
-    matchedCommand({ ...globalOptions, ...argv });
+    matchedCommand({ ...argv, __GLOBAL_OPTIONS__: globalOptions });
 }
 
 export { yaroCreateCli, UNNAMED_COMMAND_PREFIX };
@@ -80,7 +80,7 @@ async function yaroCreateCli(argv, config) {
 
   const matchedCommand = await findMatchCommand(meta.entries, meta);
   if (!matchedCommand) {
-    if (meta.argv.help) {
+    if (meta.argv.help || cfg.showHelpOnEmpty) {
       await cfg.buildOutput(meta.argv, meta, { isHelp: true });
       return;
     }
@@ -273,7 +273,6 @@ function findMatchCommand(entries, meta) {
 
     handler.key = handler.key || handler.cli?.name || match[0];
     handler.cli.name = handler.key;
-    handler.cmd.name = handler.key;
 
     return handler;
   }

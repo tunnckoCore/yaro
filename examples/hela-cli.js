@@ -3,6 +3,7 @@ import proc from 'node:process';
 // import prettyConfig from '@tunnckocore/pretty-config';
 
 import { rootWithMultipleCommands, yaro } from '../src/index.js';
+import { xaxa } from './linter-cli.js';
 
 // import * as exampleCommands from './some-commands.js';
 
@@ -11,6 +12,7 @@ const hela = yaro
   .option('--cwd', 'Current working directory', proc.cwd())
   .option('-c, --config', 'Path to config file', 'hela.config.js')
   .option('--populate-env', 'Populate env from process.env', true)
+  .option('--verbose', 'Show more verbose output', false)
   .action(rootWithMultipleCommands);
 
 // const one = yaro.command('one <a> [b]', 'Some command here').action((options, { a, b }) => {
@@ -39,7 +41,6 @@ async function loadConfig() {
 
       if (isUnnamed) {
         valueCmdFn.cli.name = valueCmdFn.key;
-        valueCmdFn.cmd.name = valueCmdFn.key;
       }
 
       return [key, valueCmdFn];
@@ -48,9 +49,10 @@ async function loadConfig() {
 }
 
 // console.log('commandscommandscommands', commands);
+const commands = await loadConfig();
 
 await yaro.run({
-  commands: await loadConfig(),
+  commands: { ...commands, xaxa },
   // commands: { ...exampleCommands, one, foo },
   rootCommand: hela,
   name: 'hela',

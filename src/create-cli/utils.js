@@ -44,7 +44,7 @@ export function buildOutput(_flags, meta, info) {
 
   if (error && has && !error.cmdUsage) {
     const isRootFailed = /ROOT_COMMAND_FAILED/.test(error.code);
-    const cmdError = error.meta.matchedCommand?.cmd || meta.cliInfo;
+    const cmdError = error.meta.matchedCommand?.cli || meta.cliInfo;
 
     cmdError.usage = cmdError.usage.trim();
     cmdError.name = cmdError.name === '_' ? '' : cmdError.name;
@@ -63,7 +63,7 @@ export function buildOutput(_flags, meta, info) {
     }
 
     console.error('\n$ %s --verbose', fLine.trim());
-    console.error('\n$ %s --help', fLine.trim());
+    console.error('$ %s --help', fLine.trim());
     console.error('');
 
     meta.config.exit(1);
@@ -73,7 +73,7 @@ export function buildOutput(_flags, meta, info) {
   if (error) {
     const helpLine =
       meta.cliInfo.helpLine === meta.cliInfo.name
-        ? `${meta.cliInfo.name} ${meta.matchedCommand.key || meta.matchedCommand?.cmd?.name || ''}`
+        ? `${meta.cliInfo.name} ${meta.matchedCommand.key || meta.matchedCommand?.cli?.name || ''}`
         : meta.cliInfo.helpLine.replace(meta.cliInfo.usage, '');
 
     // console.log('meta.cliInfo', meta.cliInfo, failed ? 'sasa' : 12);

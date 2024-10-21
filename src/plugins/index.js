@@ -39,15 +39,14 @@ export function pipeline(...fns) {
   };
 }
 
-export function defaultsPlugin(config, _aliases) {
+export function defaultsPlugin(cmdFlagsDefaults, aliases) {
   return (flags, result) => {
-    const alis = { ..._aliases };
-    const cfg = { ...config };
+    const alis = { ...aliases };
+    const cfg = { ...cmdFlagsDefaults };
     const res = { ...result };
 
     for (const [name, value] of Object.entries(cfg)) {
       res[name] = flags[name] ?? res[name] ?? value;
-      // const foo = res[name];
 
       const alibis = alis[name];
 
@@ -175,7 +174,8 @@ export function namePairUtil(ali, k) {
     .flat()
     .filter(Boolean)
     .map((x) => (x.length === 1 ? `-${x}` : `--${x}`))
-    .join(',');
+    .join(', ')
+    .trim();
 }
 
 export const pluginList = [aliasesPlugin, defaultsPlugin, coercePlugin, requiredPlugin];
