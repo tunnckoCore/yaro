@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": ["eslint-config-tunnckocore/tsconfig.json"],
+  "include": ["**/*.ts", "**/*.cjs", "**/*.js"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "checkJs": true
+  },
+}

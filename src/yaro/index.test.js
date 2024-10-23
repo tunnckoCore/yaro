@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MPL-2.0
 
 import { strict as assert } from 'node:assert';
-import { test } from 'bun:test';
+import { test } from 'asia';
 
 import {
-  createCli,
+  run,
   pluginList,
   plugins,
   UNNAMED_COMMAND_PREFIX,
@@ -14,7 +14,7 @@ import {
 } from './index.js';
 
 test('initial tests for yaro-parser package', async () => {
-  assert.equal(typeof createCli, 'function');
+  assert.equal(typeof run, 'function');
   assert.equal(typeof yaroParser, 'function');
   assert.equal(typeof yaroCommand, 'function');
   assert.equal(typeof yaroCreateCli, 'function');

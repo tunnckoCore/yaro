@@ -1,0 +1,4 @@
+name: yaro-command
+deps:
+  - yaro-parser@^6
+  - yaro-plugins@^6

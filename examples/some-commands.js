@@ -1,4 +1,4 @@
-import { isRequiredUtil as isRequired, yaroCommand } from '../src/index.js';
+import { isRequiredUtil as isRequired, yaroCommand } from '../src/yaro/index.js';
 
 export const basicfn = function initCmd() {
   console.log('some basic fn');

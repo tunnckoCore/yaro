@@ -1,4 +1,4 @@
-import { yaro, yaroCommand } from '../src/index.js';
+import { yaro, yaroCommand } from '../src/yaro/index.js';
 
 // node ./examples/git-like.js --help
 

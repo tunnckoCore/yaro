@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 import { strict as assert } from 'node:assert';
-import { test } from 'bun:test';
+import { test } from 'asia';
 
 import cmd, { command, yaroCommand } from './index.js';
 

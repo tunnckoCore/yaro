@@ -5,7 +5,7 @@
 // yaro.run is alias of the default exported function run() wihch is just thin wrapper around yaroCreateCli
 // yaro() is also an alias of yaro.run and yaroCreateCli - do not use it to define commands
 
-import { isRequiredUtil, yaro } from '../src/index.js';
+import { isRequiredUtil, yaro } from '../src/yaro/index.js';
 
 // or Deno;
 // import { yaroCommand } from 'https://esm.sh/yaro@6'

@@ -2,7 +2,7 @@ import proc from 'node:process';
 
 // import prettyConfig from '@tunnckocore/pretty-config';
 
-import { rootWithMultipleCommands, yaro } from '../src/index.js';
+import { rootWithMultipleCommands, yaro } from '../src/yaro/index.js';
 import { xaxa } from './linter-cli.js';
 
 // import * as exampleCommands from './some-commands.js';

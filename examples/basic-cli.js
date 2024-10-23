@@ -1,6 +1,6 @@
 import ipFilter from 'ip-filter';
 
-import { yaro } from '../src/index.js';
+import { yaro } from '../src/yaro/index.js';
 
 // node ./examples/basic-cli.js --help
 

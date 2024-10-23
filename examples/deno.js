@@ -1,6 +1,6 @@
 // import ipFilter from 'ip-filter';
 
-import { yaro, yaroCommand } from '../src/index.js';
+import { yaro, yaroCommand } from '../src/yaro/index.js';
 
 // node ./examples/linter-cli.js --help
 

@@ -1,6 +1,6 @@
 {
   "name": "yaro",
-  "version": "6.5.1",
+  "version": "7.4.0",
   "licenseStart": 2020,
   "license": "MPL-2.0",
   "description": "Fast, minimalist, pluggable and functional command line parsing. Create CLIs easily. A wrapper package exporting everything from several Yaro packages.",
@@ -11,7 +11,10 @@
     "url": "https://github.com/tunnckoCore/yaro.git"
   },
   "type": "module",
-  "main": "src/index.js",
+  "exports": {
+    ".": "./src/yaro/index.js",
+    "./package.json": "./package.json"
+  },
   "files": [
     "src",
     "!*.test.*"
@@ -25,13 +28,16 @@
     "tag": "latest"
   },
   "scripts": {
+    "xbuild": "rm -rf dist && bun run build:cjs && bun run build:esm",
+    "xbuild:cjs": "esbuild src/yaro/index.ts --bundle --platform=node --outfile=./dist/index.cjs --format=cjs --target=esnext",
+    "xbuild:esm": "esbuild src/yaro/index.ts --bundle --platform=node --outfile=./dist/index.js --format=esm --target=esnext",
     "check": "bun run format && bun run lint",
     "format": "bunx prettier '**/*.{md,mdx,astro,sol,json}' --write",
-    "lint": "bunx eslint '**/*.{js,jsx,ts,tsx,mjs,cjs}' --fix --cache --report-unused-disable-directives --format codeframe --quiet",
-    "test": "bun test",
-    "xbuild": "bun build src/index.js --outdir dist --target=node --format=esm && cp package.json dist && cp README.md dist"
+    "lint": "bunx eslint@^8 '**/*.{js,jsx,ts,tsx,mjs,cjs}' --fix --cache --report-unused-disable-directives --format codeframe --quiet",
+    "test": "node --test"
   },
   "devDependencies": {
+    "asia": "^3.3.0",
     "eslint-config-tunnckocore": "^8.2.2",
     "ip-filter": "^4.0.0"
   },

@@ -2,16 +2,16 @@
 
 import proc from 'node:process';
 
-import { yaroCommand } from './command/index.js';
-import { yaroCreateCli } from './create-cli/index.js';
-import { yaroParser } from './parser/index.js';
+import { yaroCommand } from '../command/index.js';
+import { yaroCreateCli } from '../create-cli/index.js';
+import { yaroParser } from '../parser/index.js';
 
 // import yaroBuildOutput from 'yaro-build-output'
 
-export * from './command/index.js';
-export * from './create-cli/index.js';
-export * from './plugins/index.js';
-export * from './parser/index.js';
+export * from '../command/index.js';
+export * from '../create-cli/index.js';
+export * from '../plugins/index.js';
+export * from '../parser/index.js';
 
 export async function run(config) {
   if (Array.isArray(config)) {

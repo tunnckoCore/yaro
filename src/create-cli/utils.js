@@ -17,9 +17,12 @@ export function buildOutput(_flags, meta, info) {
 
       console.log('Options:');
       for (const flag of Object.values(info.matchedCommand.cli.meta.flags)) {
+        const _theflag = flag;
         const def =
-          'default' in flag && flag.default !== undefined ? `(default: ${flag.default})` : '';
-        console.log('  %s   %s %s', flag.rawName, flag.desc, def);
+          'default' in _theflag && _theflag.default !== undefined
+            ? `(default: ${_theflag.default})`
+            : '';
+        console.log('  %s   %s %s', _theflag.rawName, _theflag.desc, def);
       }
       console.log('');
     }

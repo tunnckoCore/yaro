@@ -64,7 +64,7 @@ export default (yaroPlugins) => {
       return cli;
     };
 
-    cli.option = createOptionMethod(cli, cfg);
+    cli.option = createOptionMethod(cli);
     cli.action = createActionMethod(cli, cfg);
 
     if (typeof action === 'function') {

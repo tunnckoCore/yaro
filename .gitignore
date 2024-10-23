@@ -5,6 +5,7 @@ node_modules
 .pnp
 .pnp.js
 .cache
+.eslintcache
 
 # Local env files
 .env
