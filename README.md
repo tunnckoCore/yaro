@@ -1,9 +1,11 @@
-# yaro v6
+# yaro v7
 
 > A companion to Hela. Fast, minimalist, pluggable and functional command line parsing. Create CLIs
 > easily. A wrapper package exporting everything from several Yaro packages. Creating CLI programs,
 > easily. Deno support and ESM-only default. Similar to CAC, Yargs, and Sade, because there are
 > different problems and viewpoints.
+
+**NOTE: this is ESM-only package**
 
 ## Highlights
 
