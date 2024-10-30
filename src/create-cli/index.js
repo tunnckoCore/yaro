@@ -53,7 +53,7 @@ async function yaroCreateCli(argv, config) {
   }
 
   const parsedInfo = cfg.yaroParser(cfg.argv);
-  const { rootCommand, entries } = getCommands(cfg);
+  const { rootCommand, entries } = await getCommands(cfg);
   const cliInfo = getCliInfo(rootCommand, entries, cfg);
 
   if (parsedInfo.version) {
@@ -122,8 +122,13 @@ async function yaroCreateCli(argv, config) {
   await tryCatch('ERR_COMMAND_FAILED', meta, matchedCommand);
 }
 
-function getCommands(cfg) {
-  const cmds = { ...cfg.commands };
+async function getCommands(cfg) {
+  const fns =
+    typeof cfg.commands === 'object' && cfg.commands.then && cfg.commands.catch
+      ? await cfg.commands
+      : cfg.commands;
+
+  const cmds = { ...fns };
   let commands = Object.entries(cmds);
   let rootCmd = null;
 
