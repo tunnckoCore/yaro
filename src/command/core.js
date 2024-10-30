@@ -326,7 +326,7 @@ export default (yaroPlugins) => {
           args[arg.name] = val;
         }
 
-        cmd.env = cmd.globalOptions.populateEnv ? { ...proc.env } : {};
+        cmd.env = cmd.globalOptions?.populateEnv || cmd.argv?.populateEnv ? { ...proc.env } : {};
 
         return commandHandler.call(null, flags, args, cmd);
       }
