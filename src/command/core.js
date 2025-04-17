@@ -1,8 +1,11 @@
+ 
+ 
 // SPDX-License-Identifier: MPL-2.0
 
 import proc from 'node:process';
 
 /* eslint-disable unicorn/consistent-function-scoping */
+/* eslint-disable unicorn/no-anonymous-default-export */
 
 let unnamedCommandsCount = 0;
 
@@ -60,6 +63,7 @@ export default (yaroPlugins) => {
     };
 
     cli.alias = (...names) => {
+      // @ts-ignore
       cli.aliases.push(...names.flat());
       return cli;
     };
@@ -201,6 +205,7 @@ export default (yaroPlugins) => {
 
       if (hasDefault && isRequired) {
         const error = new Error(`required arguments cannot have defaults: ${v}`);
+        // @ts-ignore
         error.cmdUsage = v;
 
         throw error;
@@ -288,6 +293,7 @@ export default (yaroPlugins) => {
           const error = new Error(
             `Command "${cmdUsage}" expect second argument to be object when given`,
           );
+          // @ts-ignore
           error.cmdUsage = cmdUsage;
           throw error;
         }
@@ -307,6 +313,7 @@ export default (yaroPlugins) => {
           const isObj = typeof arg.value === 'object' && Object.keys(arg.value || {}).length === 0;
 
           const val =
+            // eslint-disable-next-line no-nested-ternary
             'default' in arg && (!arg.value || isArr || isObj)
               ? arg.default
               : hasManualInput
@@ -319,6 +326,7 @@ export default (yaroPlugins) => {
             const error = new Error(
               `missing required argument "${arg.name}" from "${cmdUsage}" command`,
             );
+            // @ts-ignore
             error.cmdUsage = cmdUsage;
             throw error;
           }

@@ -101,7 +101,8 @@ await yaro.run({
 ### Single Command Mode
 
 We are detecting by default if you pass just one `yaroCommand` to the `commands` object of
-`yaro.run`. Or if you want this command to have more sub commands, pass both `rootCommand` and `commands`.
+`yaro.run`. Or if you want this command to have more sub commands, pass both `rootCommand` and
+`commands`.
 
 You can try this example with `node examples/linter-cli.js foo bar qux`
 

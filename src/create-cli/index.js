@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
+/* eslint-disable no-nested-ternary */
+/* eslint-disable max-statements */
+
 import { buildOutput } from './utils.js';
 
 const UNNAMED_COMMAND_PREFIX = '___UNNAMED_COMMAND-';
@@ -24,10 +27,9 @@ export function rootWithMultipleCommands(globalOptions) {
     matchedCommand({ ...argv, __GLOBAL_OPTIONS__: globalOptions });
 }
 
-export { yaroCreateCli, UNNAMED_COMMAND_PREFIX };
+export { UNNAMED_COMMAND_PREFIX, yaroCreateCli };
 export default yaroCreateCli;
 
-// eslint-disable-next-line max-statements
 async function yaroCreateCli(argv, config) {
   const cfg = Array.isArray(argv) ? { argv, ...config } : { argv: [], ...argv };
 
@@ -211,9 +213,13 @@ async function tryCatch(code, meta, handler) {
   try {
     result = await handler(meta.argv);
   } catch (err) {
+    // @ts-ignore
     const exitCode = err.code && typeof err.code === 'number' ? err.code : 1;
+    // @ts-ignore
     err.code = code;
+    // @ts-ignore
     err.meta = meta;
+    // @ts-ignore
     err.exitCode = exitCode;
 
     if (meta.entries.length === 0) {
@@ -228,7 +234,7 @@ async function tryCatch(code, meta, handler) {
 
       meta.cliInfo.helpLine = `${meta.config.name || 'cli'} ${nnn} ${uuu}`.trim();
 
-      meta.config.buildOutput(meta.argv, meta, { error: err, exitCode, code });
+      meta.consolefig.buildOutput(meta.argv, meta, { error: err, exitCode, code });
       return null;
     }
 
@@ -258,6 +264,7 @@ function findMatchCommand(entries, meta) {
       }
 
       if (matched) {
+        // @ts-ignore
         meta.argv._ = meta.argv._.slice(matched.split(' ').length);
         return true;
       }

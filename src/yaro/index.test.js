@@ -4,9 +4,9 @@ import { strict as assert } from 'node:assert';
 import { test } from 'asia';
 
 import {
-  run,
   pluginList,
   plugins,
+  run,
   UNNAMED_COMMAND_PREFIX,
   yaroCommand,
   yaroCreateCli,

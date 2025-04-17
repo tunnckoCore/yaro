@@ -25,10 +25,14 @@ export default function parser(argv, config = {}) {
   }
 
   const options = { array: {}, ...config };
+  // @ts-ignore
   options.autoCount = config.autoCount ?? config.autocount ?? true;
+  // @ts-ignore
   delete options.autocount;
 
+  // @ts-ignore
   options.camelCase = config.camelCase ?? config.camelcase ?? false;
+  // @ts-ignore
   delete options.camelcase;
 
   let argument;
@@ -49,9 +53,11 @@ export default function parser(argv, config = {}) {
     arguments_ = argv;
   } else if (firstFlagIndex > 0) {
     arguments_ = argv.slice(firstFlagIndex);
+    // @ts-ignore
     res._.push(...argv.slice(0, firstFlagIndex));
   } else if (firstFlagIndex === -1) {
     arguments_ = [];
+    // @ts-ignore
     res._ = argv;
     return res;
   }
@@ -110,6 +116,7 @@ export default function parser(argv, config = {}) {
       key = key === null && isValue && previous.isFlag === true ? previous.key : key;
     }
 
+    // @ts-ignore
     if (key && !isValue && options.camelCase && isLong && key.indexOf('-') > 0) {
       key = key.replaceAll(/([a-z])-([a-z])/g, (_, p1, p2) => p1 + p2.toUpperCase());
     }
@@ -135,6 +142,7 @@ export default function parser(argv, config = {}) {
         for (const ch of key) {
           // if it exists we should try to check if it's `true` bare (no value)
           // or if it has value. if it is true, we make it 2 (number) cuz that's the 2nd occurance
+          // @ts-ignore
           if (options.autoCount && ch in res) {
             res[ch] = res[ch] === true ? 2 : res[ch] + 1;
           } else {

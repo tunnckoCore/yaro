@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: MPL-2.0
 
-// eslint-disable-next-line max-statements
-export function buildOutput(_flags, meta, info) {
+/* eslint-disable max-statements */
+
+// Renamed _flags to flags (assuming it might be used or for clarity)
+export function buildOutput(flags, meta, info) {
   if ((info.noCommandSpecified && meta.config.showHelpOnEmpty) || info.isHelp) {
     if (!info.matchedCommand && info.isHelp) {
-      udpateHelpLine(meta);
+      // Called renamed function updateHelpLine
+      updateHelpLine(meta);
       console.log('\n$ %s [options]\n', meta.cliInfo.helpLine);
       showAvailableCommands(meta, console.log);
     } else if (info.isHelp) {
@@ -17,12 +20,9 @@ export function buildOutput(_flags, meta, info) {
 
       console.log('Options:');
       for (const flag of Object.values(info.matchedCommand.cli.meta.flags)) {
-        const _theflag = flag;
         const def =
-          'default' in _theflag && _theflag.default !== undefined
-            ? `(default: ${_theflag.default})`
-            : '';
-        console.log('  %s   %s %s', _theflag.rawName, _theflag.desc, def);
+          'default' in flag && flag.default !== undefined ? `(default: ${flag.default})` : '';
+        console.log('  %s   %s %s', flag.rawName, flag.desc, def);
       }
       console.log('');
     }
@@ -34,7 +34,8 @@ export function buildOutput(_flags, meta, info) {
   if (info.commandNotFound) {
     const args = meta.argv._.join(' ');
     console.error('ERR_COMMAND_NOT_FOUND: command "%s" not found', args);
-    udpateHelpLine(meta);
+    // Called renamed function updateHelpLine
+    updateHelpLine(meta);
     console.error('\n$ %s [options]\n', meta.cliInfo.helpLine);
 
     showAvailableCommands(meta, console.error);
@@ -94,14 +95,16 @@ export function buildOutput(_flags, meta, info) {
         error.message,
       );
     }
-    udpateHelpLine(meta, error);
+    // Called renamed function updateHelpLine
+    updateHelpLine(meta, error);
     console.error('\n$ %s --verbose', helpLine.trim());
     console.error('$ %s --help\n', helpLine.trim());
     meta.config.exit(info.exitCode);
     return;
   }
 
-  udpateHelpLine(meta);
+  // Called renamed function updateHelpLine
+  updateHelpLine(meta);
 
   const cc = 'ERR_NO_COMMAND_SPECIFIED';
   console.error('%s: no command specified and showHelpOnEmpty not enabled', cc);
@@ -112,13 +115,24 @@ export function buildOutput(_flags, meta, info) {
   meta.config.exit(1);
 }
 
-function udpateHelpLine(meta, error) {
-  if (error) {
-    const nnn = error.meta.cliInfo.name;
-    const hhh = error.meta.cliInfo.helpLine;
+// Renamed function udpateHelpLine to updateHelpLine
+function updateHelpLine(meta, error) {
+  if (error && error.meta?.cliInfo) {
+    // Ensure error.meta.cliInfo exists
+    // Renamed nnn to errorCommandName and hhh to errorCommandHelpLine
+    const errorCommandName = error.meta.cliInfo.name;
+    const errorCommandHelpLine = error.meta.cliInfo.helpLine;
 
-    let line = hhh === nnn ? hhh.replace(nnn, error?.cmdUsage || '') : hhh;
-    line = hhh === line ? hhh : `${hhh.startsWith(nnn) ? '' : nnn} ${line}`;
+    let line =
+      errorCommandHelpLine === errorCommandName
+        ? errorCommandHelpLine.replace(errorCommandName, error?.cmdUsage || '')
+        : errorCommandHelpLine;
+
+    // Ensure line replacement logic is sound
+    line =
+      errorCommandHelpLine === line
+        ? line // No replacement happened, use original
+        : `${errorCommandHelpLine.startsWith(errorCommandName) ? '' : errorCommandName} ${line}`; // Prepend name if needed
 
     meta.cliInfo.helpLine = line.trim();
 
@@ -160,5 +174,6 @@ export function showAvailableCommands(meta, log) {
     log('Available commands:');
   }
 
-  available.map((line) => log(line));
+  // Use forEach as map return value is unused
+  for (const line of available) log(line);
 }

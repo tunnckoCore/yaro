@@ -10,8 +10,8 @@ import { yaroParser } from '../parser/index.js';
 
 export * from '../command/index.js';
 export * from '../create-cli/index.js';
-export * from '../plugins/index.js';
 export * from '../parser/index.js';
+export * from '../plugins/index.js';
 
 export async function run(config) {
   if (Array.isArray(config)) {

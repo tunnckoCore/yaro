@@ -28,18 +28,20 @@
     "tag": "latest"
   },
   "scripts": {
-    "xbuild": "rm -rf dist && bun run build:cjs && bun run build:esm",
-    "xbuild:cjs": "esbuild src/yaro/index.ts --bundle --platform=node --outfile=./dist/index.cjs --format=cjs --target=esnext",
-    "xbuild:esm": "esbuild src/yaro/index.ts --bundle --platform=node --outfile=./dist/index.js --format=esm --target=esnext",
     "check": "bun run format && bun run lint",
     "format": "bunx prettier '**/*.{md,mdx,astro,sol,json}' --write",
-    "lint": "bunx eslint@^8 '**/*.{js,jsx,ts,tsx,mjs,cjs}' --fix --cache --report-unused-disable-directives --format codeframe --quiet",
-    "test": "node --test"
+    "lint": "bunx eslint '**/*.{js,jsx,ts,tsx,mjs,cjs}' --fix --cache --report-unused-disable-directives --format codeframe --quiet",
+    "test": "node --test",
+    "xbuild": "rm -rf dist && bun run build:cjs && bun run build:esm",
+    "xbuild:cjs": "esbuild src/yaro/index.ts --bundle --platform=node --outfile=./dist/index.cjs --format=cjs --target=esnext",
+    "xbuild:esm": "esbuild src/yaro/index.ts --bundle --platform=node --outfile=./dist/index.js --format=esm --target=esnext"
   },
   "devDependencies": {
-    "asia": "^3.3.0",
-    "eslint-config-tunnckocore": "^8.2.2",
-    "ip-filter": "^4.0.0"
+    "eslint": "^9.24.0",
+    "eslint-config-xaxa": "^25.0.6",
+    "ip-filter": "^4.0.0",
+    "prettier": "^3.5.3",
+    "prettier-eslint": "^16.3.2"
   },
   "keywords": [
     "100lines",
